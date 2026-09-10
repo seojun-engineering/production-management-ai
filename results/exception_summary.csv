@@ -1,0 +1,9 @@
+date,product_code,planned_qty,actual_qty,defect_qty,operating_time_hr,available_time_hr,schedule_attainment,defect_rate,equipment_utilization,schedule_exception,defect_exception,utilization_exception,is_exception,exception_reason
+2026-03-01,B200,1000,920,20,7.4,8.0,0.92,0.021739130434782608,0.925,True,False,False,True,Low Schedule Attainment
+2026-03-03,B200,1000,930,22,7.3,8.0,0.93,0.023655913978494623,0.9125,True,False,False,True,Low Schedule Attainment
+2026-03-04,C300,1200,1180,40,7.6,8.0,0.9833333333333333,0.03389830508474576,0.95,False,True,False,True,High Defect Rate
+2026-03-04,D400,900,860,20,6.6,8.0,0.9555555555555556,0.023255813953488372,0.825,False,False,True,True,Low Equipment Utilization
+2026-03-06,D400,900,840,15,7.5,8.0,0.9333333333333333,0.017857142857142856,0.9375,True,False,False,True,Low Schedule Attainment
+2026-03-07,C300,1200,1165,38,7.5,8.0,0.9708333333333333,0.03261802575107296,0.9375,False,True,False,True,High Defect Rate
+2026-03-08,C300,1200,1150,24,6.7,8.0,0.9583333333333334,0.020869565217391306,0.8375,False,False,True,True,Low Equipment Utilization
+2026-03-09,B200,1000,940,21,7.2,8.0,0.94,0.022340425531914895,0.9,True,False,False,True,Low Schedule Attainment

@@ -1,0 +1,6 @@
+product_code,exception_reason,occurrence_count,priority
+B200,Low Schedule Attainment,3,HIGH
+C300,High Defect Rate,2,MEDIUM
+C300,Low Equipment Utilization,1,LOW
+D400,Low Equipment Utilization,1,LOW
+D400,Low Schedule Attainment,1,LOW
