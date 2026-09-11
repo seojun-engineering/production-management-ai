@@ -10,6 +10,35 @@ LLM이 정량 지표를 직접 계산하거나 존재하지 않는 Root Cause를
 
 ---
 
+## V3 — Evidence-Grounded Multi-Agent Production Analysis
+
+V3 extends the verified V2 analysis into a multi-agent
+decision-support structure.
+
+The goal is not to let multiple LLMs independently guess
+root causes. Instead, Python first generates deterministic
+evidence packages, and each specialist agent analyzes only
+its assigned evidence.
+
+### Architecture
+
+```text
+Verified Manufacturing Data
+            │
+            ▼
+     Python Evidence Layer
+            │
+     ┌──────┼──────┬──────┐
+     ▼      ▼      ▼      ▼
+Production Downtime Efficiency Pattern
+  Agent      Agent     Agent    Agent
+     └──────┴──────┬──────┘
+                   ▼
+          Production Manager
+                   │
+                   ▼
+        Production Action Report
+
 # V2 — Real Manufacturing Data Analysis
 
 V1에서 검증한 분석 구조를 실제 공개 산업 생산데이터로 확장했습니다.
