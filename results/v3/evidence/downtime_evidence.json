@@ -1,0 +1,201 @@
+{
+  "agent": "downtime",
+  "purpose": "Analyze downtime concentration, frequency, and long-duration events.",
+  "common": {
+    "dataset": {
+      "daily_production_records": 59,
+      "hourly_operation_records": 265,
+      "downtime_events": 1388,
+      "production_period": {
+        "start": "2022-07-22",
+        "end": "2023-02-10"
+      }
+    },
+    "data_quality": {
+      "corrected_downtime_date_rows": 18,
+      "missing_hourly_days": 1,
+      "potential_event_log_gaps": 1
+    },
+    "analysis_rules": [
+      "Python performs all numerical calculations.",
+      "Agents must not recalculate KPI values.",
+      "Agents must not invent physical root causes.",
+      "Screening score is a relative ranking, not a control limit.",
+      "Event-log duration is diagnostic and is not treated as canonical equipment downtime.",
+      "Product type correlation must not be described as causation."
+    ]
+  },
+  "event_summary": {
+    "total_events": 1388,
+    "total_event_log_minutes": 7914.03,
+    "median_event_minutes": 1.501,
+    "p90_event_minutes": 6.501,
+    "p90_plus_event_count": 139,
+    "p90_plus_duration_share_pct": 70.87
+  },
+  "duration_groups": [
+    {
+      "duration_group": "Short (<=P50)",
+      "event_count": 695,
+      "total_minutes": 801.42195,
+      "median_minutes": 1.0043833333,
+      "event_share_pct": 50.0720461095,
+      "duration_share_pct": 10.1265943145
+    },
+    {
+      "duration_group": "Medium (P50-P90)",
+      "event_count": 554,
+      "total_minutes": 1504.2822666667,
+      "median_minutes": 2.2504,
+      "event_share_pct": 39.9135446686,
+      "duration_share_pct": 19.0077851611
+    },
+    {
+      "duration_group": "Long (>=P90)",
+      "event_count": 139,
+      "total_minutes": 5608.3281333333,
+      "median_minutes": 14.0006,
+      "event_share_pct": 10.0144092219,
+      "duration_share_pct": 70.8656205245
+    }
+  ],
+  "statistical_outlier_days": [
+    {
+      "date": "2022-12-13",
+      "product_mix_l": 5,
+      "operating_ratio": 0.2925669203,
+      "downtime_h": 6.9990677778,
+      "event_count": 36.0,
+      "screening_rank": 2.0,
+      "screening_score": 88.8888888889,
+      "outlier_flag_count": 1
+    },
+    {
+      "date": "2022-07-22",
+      "product_mix_l": 3,
+      "operating_ratio": 0.5291264683,
+      "downtime_h": 3.2961147222,
+      "event_count": 70.0,
+      "screening_rank": 9.0,
+      "screening_score": 73.4567901235,
+      "outlier_flag_count": 1
+    },
+    {
+      "date": "2022-12-06",
+      "product_mix_l": 3,
+      "operating_ratio": 0.1744879151,
+      "downtime_h": 6.8599575,
+      "event_count": 10.0,
+      "screening_rank": 13.0,
+      "screening_score": 70.987654321,
+      "outlier_flag_count": 1
+    }
+  ],
+  "longest_events": [
+    {
+      "downtime_id": "downtime_995",
+      "date": "2022-12-06T00:00:00.000",
+      "downtime_start_time": "07:51:25.213000",
+      "downtime_end_time": "13:41:15.114000",
+      "downtime_minutes": 349.8316833333
+    },
+    {
+      "downtime_id": "downtime_073",
+      "date": "2022-07-26T00:00:00.000",
+      "downtime_start_time": "10:19:14.313000",
+      "downtime_end_time": "13:17:29.814000",
+      "downtime_minutes": 178.25835
+    },
+    {
+      "downtime_id": "downtime_948",
+      "date": "2022-11-28T00:00:00.000",
+      "downtime_start_time": "12:49:41.096000",
+      "downtime_end_time": "15:45:56.601000",
+      "downtime_minutes": 176.2584166667
+    },
+    {
+      "downtime_id": "downtime_1155",
+      "date": "2022-12-22T00:00:00.000",
+      "downtime_start_time": "12:12:15.528000",
+      "downtime_end_time": "15:02:45.987000",
+      "downtime_minutes": 170.50765
+    },
+    {
+      "downtime_id": "downtime_1068",
+      "date": "2022-12-19T00:00:00.000",
+      "downtime_start_time": "11:37:06.098000",
+      "downtime_end_time": "14:24:51.583000",
+      "downtime_minutes": 167.7580833333
+    },
+    {
+      "downtime_id": "downtime_1184",
+      "date": "2022-12-27T00:00:00.000",
+      "downtime_start_time": "12:29:06.522000",
+      "downtime_end_time": "15:11:52.001000",
+      "downtime_minutes": 162.7579833333
+    },
+    {
+      "downtime_id": "downtime_1133",
+      "date": "2022-12-21T00:00:00.000",
+      "downtime_start_time": "12:03:31.846000",
+      "downtime_end_time": "14:42:08.012000",
+      "downtime_minutes": 158.6027666667
+    },
+    {
+      "downtime_id": "downtime_919",
+      "date": "2022-11-21T00:00:00.000",
+      "downtime_start_time": "13:57:06.277000",
+      "downtime_end_time": "16:19:36.669000",
+      "downtime_minutes": 142.5065333333
+    },
+    {
+      "downtime_id": "downtime_903",
+      "date": "2022-11-15T00:00:00.000",
+      "downtime_start_time": "11:53:35.976000",
+      "downtime_end_time": "14:04:21.245000",
+      "downtime_minutes": 130.7544833333
+    },
+    {
+      "downtime_id": "downtime_498",
+      "date": "2022-09-28T00:00:00.000",
+      "downtime_start_time": "15:44:58.731000",
+      "downtime_end_time": "17:53:29.079000",
+      "downtime_minutes": 128.5058
+    },
+    {
+      "downtime_id": "downtime_1271",
+      "date": "2023-01-16T00:00:00.000",
+      "downtime_start_time": "12:45:05.732000",
+      "downtime_end_time": "14:47:36.083000",
+      "downtime_minutes": 122.50585
+    },
+    {
+      "downtime_id": "downtime_162",
+      "date": "2022-09-02T00:00:00.000",
+      "downtime_start_time": "12:21:36.662000",
+      "downtime_end_time": "14:22:51.800000",
+      "downtime_minutes": 121.2523
+    },
+    {
+      "downtime_id": "downtime_1216",
+      "date": "2022-12-30T00:00:00.000",
+      "downtime_start_time": "12:00:58.863000",
+      "downtime_end_time": "13:59:11.913000",
+      "downtime_minutes": 118.2175
+    },
+    {
+      "downtime_id": "downtime_722",
+      "date": "2022-10-25T00:00:00.000",
+      "downtime_start_time": "12:29:13.482000",
+      "downtime_end_time": "14:16:37.764000",
+      "downtime_minutes": 107.4047
+    },
+    {
+      "downtime_id": "downtime_1091",
+      "date": "2022-12-20T00:00:00.000",
+      "downtime_start_time": "12:34:11.448000",
+      "downtime_end_time": "14:20:56.755000",
+      "downtime_minutes": 106.7551166667
+    }
+  ]
+}

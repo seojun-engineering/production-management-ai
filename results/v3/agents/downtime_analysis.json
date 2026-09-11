@@ -1,0 +1,57 @@
+{
+  "agent": "downtime",
+  "summary": "Downtime-event logs show strong concentration in a small number of long events. The 139 events at or above the P90 account for 70.87% of logged duration, while short events comprise 50.07% of event frequency but only 10.13% of duration. Several dates and individual events warrant review, subject to event-log completeness and the limitation that logged duration is not canonical equipment downtime.",
+  "review_priority": "HIGH",
+  "key_findings": [
+    {
+      "observation": "Long-duration events are highly concentrated: 139 events in the Long (>=P90) group represent 10.0144% of events and 70.8656% of total logged duration.",
+      "evidence_reference": "duration_groups: Long (>=P90); event_count 139; event_share_pct 10.0144092219; duration_share_pct 70.8656205245",
+      "why_it_matters": "Reviewing a relatively small population of long events may explain a large share of logged downtime duration. This is a prioritization signal, not evidence of a specific root cause."
+    },
+    {
+      "observation": "Short events are frequent but contribute a much smaller share of logged duration: 695 events represent 50.0720% of events and 10.1266% of duration.",
+      "evidence_reference": "duration_groups: Short (<=P50); event_count 695; event_share_pct 50.0720461095; duration_share_pct 10.1265943145",
+      "why_it_matters": "Frequency reduction and duration reduction may require different review approaches; the evidence does not establish why short events occur."
+    },
+    {
+      "observation": "The longest listed event is downtime_995 on 2022-12-06, logged from 07:51:25.213 to 13:41:15.114 for 349.8316833333 minutes.",
+      "evidence_reference": "longest_events: downtime_id downtime_995; date 2022-12-06T00:00:00.000; downtime_minutes 349.8316833333",
+      "why_it_matters": "This is the most prominent individual duration record in the supplied ranking and should be validated against source records before operational conclusions are made."
+    },
+    {
+      "observation": "2022-12-06 is a statistical outlier day with 6.8599575 downtime hours, 10 events, screening rank 13, screening score 70.987654321, and one outlier flag.",
+      "evidence_reference": "statistical_outlier_days: date 2022-12-06; downtime_h 6.8599575; event_count 10.0; screening_rank 13.0; screening_score 70.987654321; outlier_flag_count 1",
+      "why_it_matters": "The date combines a high logged downtime duration with relatively few events, consistent with duration concentration on that day. The evidence does not identify the physical cause."
+    },
+    {
+      "observation": "2022-12-13 has the highest listed outlier screening rank and score among the supplied outlier-day records: screening_rank 2, screening_score 88.8888888889, with 6.9990677778 downtime hours and 36 events.",
+      "evidence_reference": "statistical_outlier_days: date 2022-12-13; downtime_h 6.9990677778; event_count 36.0; screening_rank 2.0; screening_score 88.8888888889",
+      "why_it_matters": "This date is a high-priority statistical review target, but the screening score is a relative ranking rather than a control limit or root-cause determination."
+    },
+    {
+      "observation": "2022-07-22 has the highest listed event count among the statistical outlier days: 70 events, with 3.2961147222 downtime hours, screening rank 9, and screening score 73.4567901235.",
+      "evidence_reference": "statistical_outlier_days: date 2022-07-22; downtime_h 3.2961147222; event_count 70.0; screening_rank 9.0; screening_score 73.4567901235",
+      "why_it_matters": "This is a frequency-focused review target distinct from the long-duration concentration dates; no machine-failure interpretation is supported by the evidence."
+    },
+    {
+      "observation": "The event dataset contains 1,388 downtime events totaling 7,914.03 logged minutes, with one potential event-log gap identified in data quality checks.",
+      "evidence_reference": "event_summary: total_events 1388; total_event_log_minutes 7914.03; common.data_quality: potential_event_log_gaps 1",
+      "why_it_matters": "The gap may affect completeness of frequency and duration comparisons, so event-based conclusions should be treated as diagnostic pending validation."
+    }
+  ],
+  "unknowns": [
+    "The supplied evidence does not state the causes, equipment identities, modes, or operational context for the events.",
+    "It is not established whether any listed event represents a machine failure; event-log duration is explicitly diagnostic rather than canonical equipment downtime.",
+    "The evidence does not identify the location or effect of the potential event-log gap.",
+    "No event-level cause or category breakdown is supplied, so the reason for long-duration concentration cannot be determined.",
+    "The relationship between logged events and canonical equipment downtime is not supplied."
+  ],
+  "recommended_next_checks": [
+    "Validate downtime_995 and the other longest events against source logs, shift records, operator comments, and canonical downtime records; do not assume they are machine failures.",
+    "Audit the event-log gap identified in common.data_quality and assess whether affected dates or records alter event frequency or duration coverage.",
+    "Review all 139 events in the Long (>=P90) group by event category, equipment identifier, shift, and disposition if those fields are available.",
+    "Investigate 2022-12-06, 2022-12-13, and 2022-07-22 using event-level records to distinguish duration concentration from frequency concentration.",
+    "Reconcile event-log durations with canonical equipment downtime before using these results for maintenance or control decisions."
+  ],
+  "confidence": 0.94
+}

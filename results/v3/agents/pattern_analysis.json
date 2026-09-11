@@ -1,0 +1,36 @@
+{
+  "agent": "pattern",
+  "summary": "The evidence shows repeated time-of-day associations in both hourly operation records and downtime-event start times. Operating ratios are lower and recorded downtime is higher around hours 12–14, while downtime events are most frequently recorded as starting during hours 14–16. Weekday results vary, but production-day counts are uneven and the evidence does not establish causation.",
+  "review_priority": "MEDIUM",
+  "key_findings": [
+    {
+      "observation": "Hourly operating performance is lower around midday: hour 12 has a median operating ratio of 0.1687466667 and hour 13 has 0.0761713889, with mean downtime of 0.6988057799 h and 0.6913150327 h respectively. Hour 14 remains lower than the later afternoon at a median operating ratio of 0.4898127778.",
+      "evidence_reference": "hourly_operation_pattern records for hour_start 12, 13, and 14; records = 26, 34, and 40 respectively",
+      "why_it_matters": "This is a repeated hour-of-day association that identifies hours 12–14 for temporal review. It does not establish why the pattern occurs."
+    },
+    {
+      "observation": "Downtime-event starts are concentrated in the 14:00–16:00 hour window in the supplied event log: event counts are 256 at hour 14, 288 at hour 15, and 269 at hour 16. Their median event durations are all approximately 1.5 minutes.",
+      "evidence_reference": "downtime_event_start_hour_pattern records for event_start_hour 14, 15, and 16",
+      "why_it_matters": "The repeated start-time concentration can help prioritize timestamp-level review of this period, but event-log duration is diagnostic and is not canonical equipment downtime under the analysis rules."
+    },
+    {
+      "observation": "Weekday operating and downtime summaries differ across the observed production days. Thursday and Wednesday have median operating ratios of 0.6377194152 and 0.608005443 respectively, while Monday and Friday have 0.4289471095 and 0.4571244955. Mean downtime ranges from 1.5954662037 h on Wednesday to 2.901868849 h on Tuesday.",
+      "evidence_reference": "weekday_pattern records for Monday, Tuesday, Wednesday, Thursday, and Friday; production_days range from 6 to 14",
+      "why_it_matters": "Weekday variation is a screening signal for repeated temporal association, but uneven sample sizes and the absence of causal evidence mean it should not be interpreted as a weekday-related root cause."
+    }
+  ],
+  "unknowns": [
+    "No Saturday or Sunday records appear in the weekday_pattern evidence, so weekend patterns are unknown.",
+    "The supplied evidence does not provide shift schedules, staffing, product mix, maintenance status, or other contextual fields needed to explain the temporal associations.",
+    "One missing hourly day, one potential event-log gap, and 18 corrected downtime-date rows may affect temporal completeness; the affected dates or hours are not identified.",
+    "The evidence does not link individual downtime events to specific hourly operation records, production days, or causes."
+  ],
+  "recommended_next_checks": [
+    "Identify the date associated with the missing hourly day and assess whether it overlaps the 12–16 hour windows.",
+    "Review the one potential event-log gap and the 18 corrected downtime-date rows before relying on event-start timing for operational decisions.",
+    "Stratify the hour-of-day patterns by production date and product type using the existing source records, while treating any association as non-causal.",
+    "Compare event-start distributions with exposure by hour and production day to determine whether the 14–16 concentration persists after accounting for the number of observed records.",
+    "Add weekend records, if applicable, and reassess weekday patterns using more balanced production-day coverage."
+  ],
+  "confidence": 0.84
+}

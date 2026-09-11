@@ -1,0 +1,46 @@
+{
+  "agent": "efficiency",
+  "summary": "Operating ratio is generally low across the monitored production period, with the lowest observed days concentrated between August and December 2022. Product-level single-product summaries show different operating-ratio distributions, but the evidence does not establish product type as the cause of those differences.",
+  "review_priority": "HIGH",
+  "key_findings": [
+    {
+      "observation": "The daily operating-ratio distribution has a median of 0.4728; the 25th and 10th percentiles are 0.4003 and 0.2913, respectively.",
+      "evidence_reference": "daily_operating_ratio_distribution: p10=0.2913, p25=0.4003, median=0.4728",
+      "why_it_matters": "A substantial portion of production days had operating ratios below the median, indicating recurring operating-ratio loss rather than an isolated low day."
+    },
+    {
+      "observation": "The ten listed lowest operating-ratio days range from 0.1538448551 on 2022-12-19 to 0.3406505626 on 2022-09-02. The lowest listed days include 2022-12-19, 2022-12-06, 2022-08-01, 2022-12-27, and 2022-11-21.",
+      "evidence_reference": "lowest_operating_ratio_days records for 2022-12-19 through 2022-09-02",
+      "why_it_matters": "These dates identify specific production days for review of operating loss; the evidence describes the magnitude and timing but does not identify physical causes."
+    },
+    {
+      "observation": "Low operating ratio is not consistently accompanied by the same downtime hours or event count. For example, 2022-12-06 has operating ratio 0.1744879151, downtime_h 6.8599575, and event_count 10, while 2022-11-03 has operating ratio 0.2907327837, downtime_h 3.9910072222, and event_count 67.",
+      "evidence_reference": "lowest_operating_ratio_days records for 2022-12-06 and 2022-11-03",
+      "why_it_matters": "The listed diagnostics vary across low-ratio days, so event count or recorded downtime alone should not be treated as an established explanation for operating-ratio loss."
+    },
+    {
+      "observation": "Among single-product production days, product type 3 has median operating ratio 0.4751153955 and mean operating ratio 0.4935817201 across 36 records; product type 5 has median operating ratio 0.427437738 and mean operating ratio 0.4161547155 across 17 records.",
+      "evidence_reference": "product_comparison_single_product_days records for product_type_l 3 and 5",
+      "why_it_matters": "The summaries show an observed difference in operating-ratio distributions between these groups, but they do not demonstrate that product type caused the difference."
+    },
+    {
+      "observation": "The evidence includes 59 daily production records and identifies one missing hourly day, one potential event-log gap, and 18 corrected downtime-date rows.",
+      "evidence_reference": "common.dataset and common.data_quality fields",
+      "why_it_matters": "Data completeness and date corrections may affect interpretation of daily operating-ratio and operating-loss patterns."
+    }
+  ],
+  "unknowns": [
+    "The evidence does not identify the physical or operational root causes of the low operating-ratio days.",
+    "The evidence does not provide a canonical operating-loss breakdown by cause, equipment, shift, or time interval.",
+    "The relationship between recorded downtime hours and operating-ratio loss is not established, and event-log duration is explicitly diagnostic rather than canonical equipment downtime.",
+    "The evidence does not show whether the product-level operating-ratio differences remain after controlling for date, schedule, shift, or other operating conditions."
+  ],
+  "recommended_next_checks": [
+    "Review source production and hourly records for the listed low-operating-ratio dates, beginning with 2022-12-19, 2022-12-06, 2022-11-03, 2022-12-13, and 2022-11-28.",
+    "Reconcile operating-ratio calculations with the one missing hourly day, the one potential event-log gap, and the 18 corrected downtime-date rows.",
+    "Obtain a validated operating-loss decomposition by equipment, shift, operating state, and downtime category for the low-ratio dates.",
+    "Compare product-type groups using matched operating conditions and confirm whether the observed difference persists without treating product type as causal.",
+    "Verify whether event-log durations and downtime records are aligned for the low-ratio dates before using them diagnostically."
+  ],
+  "confidence": 0.92
+}

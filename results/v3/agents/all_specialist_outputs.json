@@ -1,0 +1,193 @@
+{
+  "production": {
+    "agent": "production",
+    "summary": "The screening-ranked production days requiring the closest operational review are 2022-11-03, 2022-12-13, 2022-11-28, and 2022-12-19, ranked 1 through 4. These days show comparatively low operating ratios and/or production output levels within the supplied screening records. Product-level summaries also show different typical production levels for single-product type 3 and type 5 days, but the evidence does not establish causation.",
+    "review_priority": "HIGH",
+    "key_findings": [
+      {
+        "observation": "2022-11-03 is the highest-ranked production review day, with screening rank 1 and score 92.5925925926. Its production output was 998 units and its operating ratio was 0.2907327837.",
+        "evidence_reference": "top_screening_days record dated 2022-11-03T00:00:00.000: screening_rank, screening_score, production_units, operating_ratio",
+        "why_it_matters": "This is the top Python-generated screening result and should be the first production day reviewed."
+      },
+      {
+        "observation": "2022-12-13 is screening rank 2 with score 88.8888888889, production output of 1394 units, operating ratio of 0.2925669203, and recorded downtime_h of 6.9990677778.",
+        "evidence_reference": "top_screening_days record dated 2022-12-13T00:00:00.000",
+        "why_it_matters": "Its high screening rank and low operating ratio identify it as a priority for checking production records and shift performance."
+      },
+      {
+        "observation": "2022-11-28 and 2022-12-19 are screening ranks 3 and 4, respectively, each with a screening score of 87.037037037. Their production outputs were 1596 and 543 units, and their operating ratios were 0.3219676123 and 0.1538448551, respectively.",
+        "evidence_reference": "top_screening_days records dated 2022-11-28T00:00:00.000 and 2022-12-19T00:00:00.000",
+        "why_it_matters": "These high-ranked days warrant review; 2022-12-19 is especially notable in the supplied records for its low operating ratio and low production output."
+      },
+      {
+        "observation": "Additional ranked days include 2022-07-26 (rank 5, 2243 units, operating ratio 0.3784709722), 2022-09-02 (rank 6, 907 units, operating ratio 0.3406505626), and 2022-11-21 (rank 7, 606 units, operating ratio 0.2896400226).",
+        "evidence_reference": "top_screening_days records dated 2022-07-26T00:00:00.000, 2022-09-02T00:00:00.000, and 2022-11-21T00:00:00.000",
+        "why_it_matters": "These are the next production review tier after the top four ranked days and provide a broader operational review queue."
+      },
+      {
+        "observation": "Single-product type 3 days have a median production of 1272 units across 36 production records, while type 5 days have a median production of 780 units across 17 records. Median operating ratios are 0.4751153955 for type 3 and 0.427437738 for type 5.",
+        "evidence_reference": "product_comparison_single_product_days records for product_type_l 3 and 5",
+        "why_it_matters": "Product type is relevant context when comparing production days, but these summaries do not demonstrate that product type caused the observed differences."
+      },
+      {
+        "observation": "The overall production-unit distribution has a median of 1028.5 units, a mean of 1087.2857142857142, a minimum of 225, and a maximum of 2849.",
+        "evidence_reference": "production_unit_distribution summary",
+        "why_it_matters": "This provides context for assessing whether a reviewed day's output is relatively low or high without changing the supplied screening ranking."
+      }
+    ],
+    "unknowns": [
+      "The evidence does not provide shift-level production, planned-versus-actual output, product schedule, quality losses, staffing, or order requirements for the ranked days.",
+      "The evidence does not identify the operational explanation for any low operating ratio or production output; physical root causes cannot be inferred.",
+      "Event-log duration is diagnostic rather than canonical equipment downtime, according to the analysis rules.",
+      "There is 1 missing hourly day, 1 potential event-log gap, and 18 corrected downtime-date rows in the dataset quality summary; the affected dates are not identified.",
+      "The evidence does not establish whether product mix differences explain production performance."
+    ],
+    "recommended_next_checks": [
+      "For 2022-11-03, 2022-12-13, 2022-11-28, and 2022-12-19, review shift-level production counts, planned output, production schedule, and recorded quality or scrap data.",
+      "Validate the production records and operating-ratio inputs for the top-ranked days against source production and hourly-operation records.",
+      "Review the remaining ranked queue in order, beginning with 2022-07-26, 2022-09-02, and 2022-11-21, and compare each day with its planned production requirement.",
+      "Identify which dates are affected by the missing hourly day, potential event-log gap, and corrected downtime-date rows before making date-level comparisons.",
+      "Stratify future production review by product type and confirm the schedule and operating context; do not interpret the supplied product comparison as causal evidence."
+    ],
+    "confidence": 0.95
+  },
+  "downtime": {
+    "agent": "downtime",
+    "summary": "Downtime-event logs show strong concentration in a small number of long events. The 139 events at or above the P90 account for 70.87% of logged duration, while short events comprise 50.07% of event frequency but only 10.13% of duration. Several dates and individual events warrant review, subject to event-log completeness and the limitation that logged duration is not canonical equipment downtime.",
+    "review_priority": "HIGH",
+    "key_findings": [
+      {
+        "observation": "Long-duration events are highly concentrated: 139 events in the Long (>=P90) group represent 10.0144% of events and 70.8656% of total logged duration.",
+        "evidence_reference": "duration_groups: Long (>=P90); event_count 139; event_share_pct 10.0144092219; duration_share_pct 70.8656205245",
+        "why_it_matters": "Reviewing a relatively small population of long events may explain a large share of logged downtime duration. This is a prioritization signal, not evidence of a specific root cause."
+      },
+      {
+        "observation": "Short events are frequent but contribute a much smaller share of logged duration: 695 events represent 50.0720% of events and 10.1266% of duration.",
+        "evidence_reference": "duration_groups: Short (<=P50); event_count 695; event_share_pct 50.0720461095; duration_share_pct 10.1265943145",
+        "why_it_matters": "Frequency reduction and duration reduction may require different review approaches; the evidence does not establish why short events occur."
+      },
+      {
+        "observation": "The longest listed event is downtime_995 on 2022-12-06, logged from 07:51:25.213 to 13:41:15.114 for 349.8316833333 minutes.",
+        "evidence_reference": "longest_events: downtime_id downtime_995; date 2022-12-06T00:00:00.000; downtime_minutes 349.8316833333",
+        "why_it_matters": "This is the most prominent individual duration record in the supplied ranking and should be validated against source records before operational conclusions are made."
+      },
+      {
+        "observation": "2022-12-06 is a statistical outlier day with 6.8599575 downtime hours, 10 events, screening rank 13, screening score 70.987654321, and one outlier flag.",
+        "evidence_reference": "statistical_outlier_days: date 2022-12-06; downtime_h 6.8599575; event_count 10.0; screening_rank 13.0; screening_score 70.987654321; outlier_flag_count 1",
+        "why_it_matters": "The date combines a high logged downtime duration with relatively few events, consistent with duration concentration on that day. The evidence does not identify the physical cause."
+      },
+      {
+        "observation": "2022-12-13 has the highest listed outlier screening rank and score among the supplied outlier-day records: screening_rank 2, screening_score 88.8888888889, with 6.9990677778 downtime hours and 36 events.",
+        "evidence_reference": "statistical_outlier_days: date 2022-12-13; downtime_h 6.9990677778; event_count 36.0; screening_rank 2.0; screening_score 88.8888888889",
+        "why_it_matters": "This date is a high-priority statistical review target, but the screening score is a relative ranking rather than a control limit or root-cause determination."
+      },
+      {
+        "observation": "2022-07-22 has the highest listed event count among the statistical outlier days: 70 events, with 3.2961147222 downtime hours, screening rank 9, and screening score 73.4567901235.",
+        "evidence_reference": "statistical_outlier_days: date 2022-07-22; downtime_h 3.2961147222; event_count 70.0; screening_rank 9.0; screening_score 73.4567901235",
+        "why_it_matters": "This is a frequency-focused review target distinct from the long-duration concentration dates; no machine-failure interpretation is supported by the evidence."
+      },
+      {
+        "observation": "The event dataset contains 1,388 downtime events totaling 7,914.03 logged minutes, with one potential event-log gap identified in data quality checks.",
+        "evidence_reference": "event_summary: total_events 1388; total_event_log_minutes 7914.03; common.data_quality: potential_event_log_gaps 1",
+        "why_it_matters": "The gap may affect completeness of frequency and duration comparisons, so event-based conclusions should be treated as diagnostic pending validation."
+      }
+    ],
+    "unknowns": [
+      "The supplied evidence does not state the causes, equipment identities, modes, or operational context for the events.",
+      "It is not established whether any listed event represents a machine failure; event-log duration is explicitly diagnostic rather than canonical equipment downtime.",
+      "The evidence does not identify the location or effect of the potential event-log gap.",
+      "No event-level cause or category breakdown is supplied, so the reason for long-duration concentration cannot be determined.",
+      "The relationship between logged events and canonical equipment downtime is not supplied."
+    ],
+    "recommended_next_checks": [
+      "Validate downtime_995 and the other longest events against source logs, shift records, operator comments, and canonical downtime records; do not assume they are machine failures.",
+      "Audit the event-log gap identified in common.data_quality and assess whether affected dates or records alter event frequency or duration coverage.",
+      "Review all 139 events in the Long (>=P90) group by event category, equipment identifier, shift, and disposition if those fields are available.",
+      "Investigate 2022-12-06, 2022-12-13, and 2022-07-22 using event-level records to distinguish duration concentration from frequency concentration.",
+      "Reconcile event-log durations with canonical equipment downtime before using these results for maintenance or control decisions."
+    ],
+    "confidence": 0.94
+  },
+  "efficiency": {
+    "agent": "efficiency",
+    "summary": "Operating ratio is generally low across the monitored production period, with the lowest observed days concentrated between August and December 2022. Product-level single-product summaries show different operating-ratio distributions, but the evidence does not establish product type as the cause of those differences.",
+    "review_priority": "HIGH",
+    "key_findings": [
+      {
+        "observation": "The daily operating-ratio distribution has a median of 0.4728; the 25th and 10th percentiles are 0.4003 and 0.2913, respectively.",
+        "evidence_reference": "daily_operating_ratio_distribution: p10=0.2913, p25=0.4003, median=0.4728",
+        "why_it_matters": "A substantial portion of production days had operating ratios below the median, indicating recurring operating-ratio loss rather than an isolated low day."
+      },
+      {
+        "observation": "The ten listed lowest operating-ratio days range from 0.1538448551 on 2022-12-19 to 0.3406505626 on 2022-09-02. The lowest listed days include 2022-12-19, 2022-12-06, 2022-08-01, 2022-12-27, and 2022-11-21.",
+        "evidence_reference": "lowest_operating_ratio_days records for 2022-12-19 through 2022-09-02",
+        "why_it_matters": "These dates identify specific production days for review of operating loss; the evidence describes the magnitude and timing but does not identify physical causes."
+      },
+      {
+        "observation": "Low operating ratio is not consistently accompanied by the same downtime hours or event count. For example, 2022-12-06 has operating ratio 0.1744879151, downtime_h 6.8599575, and event_count 10, while 2022-11-03 has operating ratio 0.2907327837, downtime_h 3.9910072222, and event_count 67.",
+        "evidence_reference": "lowest_operating_ratio_days records for 2022-12-06 and 2022-11-03",
+        "why_it_matters": "The listed diagnostics vary across low-ratio days, so event count or recorded downtime alone should not be treated as an established explanation for operating-ratio loss."
+      },
+      {
+        "observation": "Among single-product production days, product type 3 has median operating ratio 0.4751153955 and mean operating ratio 0.4935817201 across 36 records; product type 5 has median operating ratio 0.427437738 and mean operating ratio 0.4161547155 across 17 records.",
+        "evidence_reference": "product_comparison_single_product_days records for product_type_l 3 and 5",
+        "why_it_matters": "The summaries show an observed difference in operating-ratio distributions between these groups, but they do not demonstrate that product type caused the difference."
+      },
+      {
+        "observation": "The evidence includes 59 daily production records and identifies one missing hourly day, one potential event-log gap, and 18 corrected downtime-date rows.",
+        "evidence_reference": "common.dataset and common.data_quality fields",
+        "why_it_matters": "Data completeness and date corrections may affect interpretation of daily operating-ratio and operating-loss patterns."
+      }
+    ],
+    "unknowns": [
+      "The evidence does not identify the physical or operational root causes of the low operating-ratio days.",
+      "The evidence does not provide a canonical operating-loss breakdown by cause, equipment, shift, or time interval.",
+      "The relationship between recorded downtime hours and operating-ratio loss is not established, and event-log duration is explicitly diagnostic rather than canonical equipment downtime.",
+      "The evidence does not show whether the product-level operating-ratio differences remain after controlling for date, schedule, shift, or other operating conditions."
+    ],
+    "recommended_next_checks": [
+      "Review source production and hourly records for the listed low-operating-ratio dates, beginning with 2022-12-19, 2022-12-06, 2022-11-03, 2022-12-13, and 2022-11-28.",
+      "Reconcile operating-ratio calculations with the one missing hourly day, the one potential event-log gap, and the 18 corrected downtime-date rows.",
+      "Obtain a validated operating-loss decomposition by equipment, shift, operating state, and downtime category for the low-ratio dates.",
+      "Compare product-type groups using matched operating conditions and confirm whether the observed difference persists without treating product type as causal.",
+      "Verify whether event-log durations and downtime records are aligned for the low-ratio dates before using them diagnostically."
+    ],
+    "confidence": 0.92
+  },
+  "pattern": {
+    "agent": "pattern",
+    "summary": "The evidence shows repeated time-of-day associations in both hourly operation records and downtime-event start times. Operating ratios are lower and recorded downtime is higher around hours 12–14, while downtime events are most frequently recorded as starting during hours 14–16. Weekday results vary, but production-day counts are uneven and the evidence does not establish causation.",
+    "review_priority": "MEDIUM",
+    "key_findings": [
+      {
+        "observation": "Hourly operating performance is lower around midday: hour 12 has a median operating ratio of 0.1687466667 and hour 13 has 0.0761713889, with mean downtime of 0.6988057799 h and 0.6913150327 h respectively. Hour 14 remains lower than the later afternoon at a median operating ratio of 0.4898127778.",
+        "evidence_reference": "hourly_operation_pattern records for hour_start 12, 13, and 14; records = 26, 34, and 40 respectively",
+        "why_it_matters": "This is a repeated hour-of-day association that identifies hours 12–14 for temporal review. It does not establish why the pattern occurs."
+      },
+      {
+        "observation": "Downtime-event starts are concentrated in the 14:00–16:00 hour window in the supplied event log: event counts are 256 at hour 14, 288 at hour 15, and 269 at hour 16. Their median event durations are all approximately 1.5 minutes.",
+        "evidence_reference": "downtime_event_start_hour_pattern records for event_start_hour 14, 15, and 16",
+        "why_it_matters": "The repeated start-time concentration can help prioritize timestamp-level review of this period, but event-log duration is diagnostic and is not canonical equipment downtime under the analysis rules."
+      },
+      {
+        "observation": "Weekday operating and downtime summaries differ across the observed production days. Thursday and Wednesday have median operating ratios of 0.6377194152 and 0.608005443 respectively, while Monday and Friday have 0.4289471095 and 0.4571244955. Mean downtime ranges from 1.5954662037 h on Wednesday to 2.901868849 h on Tuesday.",
+        "evidence_reference": "weekday_pattern records for Monday, Tuesday, Wednesday, Thursday, and Friday; production_days range from 6 to 14",
+        "why_it_matters": "Weekday variation is a screening signal for repeated temporal association, but uneven sample sizes and the absence of causal evidence mean it should not be interpreted as a weekday-related root cause."
+      }
+    ],
+    "unknowns": [
+      "No Saturday or Sunday records appear in the weekday_pattern evidence, so weekend patterns are unknown.",
+      "The supplied evidence does not provide shift schedules, staffing, product mix, maintenance status, or other contextual fields needed to explain the temporal associations.",
+      "One missing hourly day, one potential event-log gap, and 18 corrected downtime-date rows may affect temporal completeness; the affected dates or hours are not identified.",
+      "The evidence does not link individual downtime events to specific hourly operation records, production days, or causes."
+    ],
+    "recommended_next_checks": [
+      "Identify the date associated with the missing hourly day and assess whether it overlaps the 12–16 hour windows.",
+      "Review the one potential event-log gap and the 18 corrected downtime-date rows before relying on event-start timing for operational decisions.",
+      "Stratify the hour-of-day patterns by production date and product type using the existing source records, while treating any association as non-causal.",
+      "Compare event-start distributions with exposure by hour and production day to determine whether the 14–16 concentration persists after accounting for the number of observed records.",
+      "Add weekend records, if applicable, and reassess weekday patterns using more balanced production-day coverage."
+    ],
+    "confidence": 0.84
+  }
+}

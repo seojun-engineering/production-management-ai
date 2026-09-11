@@ -1,0 +1,147 @@
+{
+  "agent": "efficiency",
+  "purpose": "Evaluate operating-ratio loss without inventing its physical cause.",
+  "common": {
+    "dataset": {
+      "daily_production_records": 59,
+      "hourly_operation_records": 265,
+      "downtime_events": 1388,
+      "production_period": {
+        "start": "2022-07-22",
+        "end": "2023-02-10"
+      }
+    },
+    "data_quality": {
+      "corrected_downtime_date_rows": 18,
+      "missing_hourly_days": 1,
+      "potential_event_log_gaps": 1
+    },
+    "analysis_rules": [
+      "Python performs all numerical calculations.",
+      "Agents must not recalculate KPI values.",
+      "Agents must not invent physical root causes.",
+      "Screening score is a relative ranking, not a control limit.",
+      "Event-log duration is diagnostic and is not treated as canonical equipment downtime.",
+      "Product type correlation must not be described as causation."
+    ]
+  },
+  "daily_operating_ratio_distribution": {
+    "p10": 0.2913,
+    "p25": 0.4003,
+    "median": 0.4728,
+    "p75": 0.5873,
+    "p90": 0.6986
+  },
+  "lowest_operating_ratio_days": [
+    {
+      "date": "2022-12-19T00:00:00.000",
+      "product_mix_l": "5",
+      "production_units": 543,
+      "operating_ratio": 0.1538448551,
+      "downtime_h": 4.8585758333,
+      "event_count": 25.0,
+      "screening_rank": 4.0
+    },
+    {
+      "date": "2022-12-06T00:00:00.000",
+      "product_mix_l": "3",
+      "production_units": 1050,
+      "operating_ratio": 0.1744879151,
+      "downtime_h": 6.8599575,
+      "event_count": 10.0,
+      "screening_rank": 13.0
+    },
+    {
+      "date": "2022-08-01T00:00:00.000",
+      "product_mix_l": "3",
+      "production_units": 754,
+      "operating_ratio": 0.2711566667,
+      "downtime_h": 2.18653,
+      "event_count": 17.0,
+      "screening_rank": 18.0
+    },
+    {
+      "date": "2022-12-27T00:00:00.000",
+      "product_mix_l": "3",
+      "production_units": 1203,
+      "operating_ratio": 0.2772210441,
+      "downtime_h": 4.7149280556,
+      "event_count": 12.0,
+      "screening_rank": 14.0
+    },
+    {
+      "date": "2022-11-21T00:00:00.000",
+      "product_mix_l": "5",
+      "production_units": 606,
+      "operating_ratio": 0.2896400226,
+      "downtime_h": 3.1376205556,
+      "event_count": 20.0,
+      "screening_rank": 7.0
+    },
+    {
+      "date": "2022-11-03T00:00:00.000",
+      "product_mix_l": "3",
+      "production_units": 998,
+      "operating_ratio": 0.2907327837,
+      "downtime_h": 3.9910072222,
+      "event_count": 67.0,
+      "screening_rank": 1.0
+    },
+    {
+      "date": "2022-12-13T00:00:00.000",
+      "product_mix_l": "5",
+      "production_units": 1394,
+      "operating_ratio": 0.2925669203,
+      "downtime_h": 6.9990677778,
+      "event_count": 36.0,
+      "screening_rank": 2.0
+    },
+    {
+      "date": "2022-11-28T00:00:00.000",
+      "product_mix_l": "3",
+      "production_units": 1596,
+      "operating_ratio": 0.3219676123,
+      "downtime_h": 4.5418858333,
+      "event_count": 46.0,
+      "screening_rank": 3.0
+    },
+    {
+      "date": "2022-12-28T00:00:00.000",
+      "product_mix_l": "3",
+      "production_units": 813,
+      "operating_ratio": 0.3288090507,
+      "downtime_h": 2.9086805556,
+      "event_count": 18.0,
+      "screening_rank": 15.0
+    },
+    {
+      "date": "2022-09-02T00:00:00.000",
+      "product_mix_l": "5",
+      "production_units": 907,
+      "operating_ratio": 0.3406505626,
+      "downtime_h": 2.6044302778,
+      "event_count": 53.0,
+      "screening_rank": 6.0
+    }
+  ],
+  "product_comparison_single_product_days": [
+    {
+      "product_type_l": 3,
+      "production_records": 36,
+      "median_production_units": 1272.0,
+      "mean_production_units": 1231.6111111111,
+      "median_operating_ratio": 0.4751153955,
+      "mean_operating_ratio": 0.4935817201,
+      "median_nonoperation_h": 2.5896615278
+    },
+    {
+      "product_type_l": 5,
+      "production_records": 17,
+      "median_production_units": 780.0,
+      "mean_production_units": 828.0,
+      "median_operating_ratio": 0.427437738,
+      "mean_operating_ratio": 0.4161547155,
+      "median_nonoperation_h": 2.2309363889
+    }
+  ]
+}

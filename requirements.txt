@@ -2,3 +2,4 @@ pandas
 openai
 openpyxl
 matplotlib
+pydantic

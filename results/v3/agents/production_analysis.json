@@ -1,0 +1,52 @@
+{
+  "agent": "production",
+  "summary": "The screening-ranked production days requiring the closest operational review are 2022-11-03, 2022-12-13, 2022-11-28, and 2022-12-19, ranked 1 through 4. These days show comparatively low operating ratios and/or production output levels within the supplied screening records. Product-level summaries also show different typical production levels for single-product type 3 and type 5 days, but the evidence does not establish causation.",
+  "review_priority": "HIGH",
+  "key_findings": [
+    {
+      "observation": "2022-11-03 is the highest-ranked production review day, with screening rank 1 and score 92.5925925926. Its production output was 998 units and its operating ratio was 0.2907327837.",
+      "evidence_reference": "top_screening_days record dated 2022-11-03T00:00:00.000: screening_rank, screening_score, production_units, operating_ratio",
+      "why_it_matters": "This is the top Python-generated screening result and should be the first production day reviewed."
+    },
+    {
+      "observation": "2022-12-13 is screening rank 2 with score 88.8888888889, production output of 1394 units, operating ratio of 0.2925669203, and recorded downtime_h of 6.9990677778.",
+      "evidence_reference": "top_screening_days record dated 2022-12-13T00:00:00.000",
+      "why_it_matters": "Its high screening rank and low operating ratio identify it as a priority for checking production records and shift performance."
+    },
+    {
+      "observation": "2022-11-28 and 2022-12-19 are screening ranks 3 and 4, respectively, each with a screening score of 87.037037037. Their production outputs were 1596 and 543 units, and their operating ratios were 0.3219676123 and 0.1538448551, respectively.",
+      "evidence_reference": "top_screening_days records dated 2022-11-28T00:00:00.000 and 2022-12-19T00:00:00.000",
+      "why_it_matters": "These high-ranked days warrant review; 2022-12-19 is especially notable in the supplied records for its low operating ratio and low production output."
+    },
+    {
+      "observation": "Additional ranked days include 2022-07-26 (rank 5, 2243 units, operating ratio 0.3784709722), 2022-09-02 (rank 6, 907 units, operating ratio 0.3406505626), and 2022-11-21 (rank 7, 606 units, operating ratio 0.2896400226).",
+      "evidence_reference": "top_screening_days records dated 2022-07-26T00:00:00.000, 2022-09-02T00:00:00.000, and 2022-11-21T00:00:00.000",
+      "why_it_matters": "These are the next production review tier after the top four ranked days and provide a broader operational review queue."
+    },
+    {
+      "observation": "Single-product type 3 days have a median production of 1272 units across 36 production records, while type 5 days have a median production of 780 units across 17 records. Median operating ratios are 0.4751153955 for type 3 and 0.427437738 for type 5.",
+      "evidence_reference": "product_comparison_single_product_days records for product_type_l 3 and 5",
+      "why_it_matters": "Product type is relevant context when comparing production days, but these summaries do not demonstrate that product type caused the observed differences."
+    },
+    {
+      "observation": "The overall production-unit distribution has a median of 1028.5 units, a mean of 1087.2857142857142, a minimum of 225, and a maximum of 2849.",
+      "evidence_reference": "production_unit_distribution summary",
+      "why_it_matters": "This provides context for assessing whether a reviewed day's output is relatively low or high without changing the supplied screening ranking."
+    }
+  ],
+  "unknowns": [
+    "The evidence does not provide shift-level production, planned-versus-actual output, product schedule, quality losses, staffing, or order requirements for the ranked days.",
+    "The evidence does not identify the operational explanation for any low operating ratio or production output; physical root causes cannot be inferred.",
+    "Event-log duration is diagnostic rather than canonical equipment downtime, according to the analysis rules.",
+    "There is 1 missing hourly day, 1 potential event-log gap, and 18 corrected downtime-date rows in the dataset quality summary; the affected dates are not identified.",
+    "The evidence does not establish whether product mix differences explain production performance."
+  ],
+  "recommended_next_checks": [
+    "For 2022-11-03, 2022-12-13, 2022-11-28, and 2022-12-19, review shift-level production counts, planned output, production schedule, and recorded quality or scrap data.",
+    "Validate the production records and operating-ratio inputs for the top-ranked days against source production and hourly-operation records.",
+    "Review the remaining ranked queue in order, beginning with 2022-07-26, 2022-09-02, and 2022-11-21, and compare each day with its planned production requirement.",
+    "Identify which dates are affected by the missing hourly day, potential event-log gap, and corrected downtime-date rows before making date-level comparisons.",
+    "Stratify future production review by product type and confirm the schedule and operating context; do not interpret the supplied product comparison as causal evidence."
+  ],
+  "confidence": 0.95
+}

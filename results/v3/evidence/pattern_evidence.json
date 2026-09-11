@@ -1,0 +1,257 @@
+{
+  "agent": "pattern",
+  "purpose": "Identify repeated temporal patterns without treating correlation as root cause.",
+  "common": {
+    "dataset": {
+      "daily_production_records": 59,
+      "hourly_operation_records": 265,
+      "downtime_events": 1388,
+      "production_period": {
+        "start": "2022-07-22",
+        "end": "2023-02-10"
+      }
+    },
+    "data_quality": {
+      "corrected_downtime_date_rows": 18,
+      "missing_hourly_days": 1,
+      "potential_event_log_gaps": 1
+    },
+    "analysis_rules": [
+      "Python performs all numerical calculations.",
+      "Agents must not recalculate KPI values.",
+      "Agents must not invent physical root causes.",
+      "Screening score is a relative ranking, not a control limit.",
+      "Event-log duration is diagnostic and is not treated as canonical equipment downtime.",
+      "Product type correlation must not be described as causation."
+    ]
+  },
+  "hourly_operation_pattern": [
+    {
+      "hour_start": 7,
+      "records": 2,
+      "mean_operating_ratio": 0.0081546361,
+      "median_operating_ratio": 0.0081546361,
+      "mean_downtime_h": 0.5342765278,
+      "total_downtime_h": 1.0685530556
+    },
+    {
+      "hour_start": 8,
+      "records": 2,
+      "mean_operating_ratio": 0.0291666667,
+      "median_operating_ratio": 0.0291666667,
+      "mean_downtime_h": 0.9708333333,
+      "total_downtime_h": 1.9416666667
+    },
+    {
+      "hour_start": 9,
+      "records": 3,
+      "mean_operating_ratio": 0.2630537037,
+      "median_operating_ratio": 0.0058333333,
+      "mean_downtime_h": 0.7369462963,
+      "total_downtime_h": 2.2108388889
+    },
+    {
+      "hour_start": 10,
+      "records": 10,
+      "mean_operating_ratio": 0.6285756869,
+      "median_operating_ratio": 0.7187029167,
+      "mean_downtime_h": 0.2958521667,
+      "total_downtime_h": 2.9585216667
+    },
+    {
+      "hour_start": 11,
+      "records": 24,
+      "mean_operating_ratio": 0.6181219021,
+      "median_operating_ratio": 0.6201960697,
+      "mean_downtime_h": 0.346579456,
+      "total_downtime_h": 8.3179069444
+    },
+    {
+      "hour_start": 12,
+      "records": 26,
+      "mean_operating_ratio": 0.2681687847,
+      "median_operating_ratio": 0.1687466667,
+      "mean_downtime_h": 0.6988057799,
+      "total_downtime_h": 18.1689502778
+    },
+    {
+      "hour_start": 13,
+      "records": 34,
+      "mean_operating_ratio": 0.2305357046,
+      "median_operating_ratio": 0.0761713889,
+      "mean_downtime_h": 0.6913150327,
+      "total_downtime_h": 23.5047111111
+    },
+    {
+      "hour_start": 14,
+      "records": 40,
+      "mean_operating_ratio": 0.4338238834,
+      "median_operating_ratio": 0.4898127778,
+      "mean_downtime_h": 0.5161884444,
+      "total_downtime_h": 20.6475377778
+    },
+    {
+      "hour_start": 15,
+      "records": 47,
+      "mean_operating_ratio": 0.5670072367,
+      "median_operating_ratio": 0.52856875,
+      "mean_downtime_h": 0.392435331,
+      "total_downtime_h": 18.4444605556
+    },
+    {
+      "hour_start": 16,
+      "records": 43,
+      "mean_operating_ratio": 0.5479389178,
+      "median_operating_ratio": 0.5459509537,
+      "mean_downtime_h": 0.378986053,
+      "total_downtime_h": 16.2964002778
+    },
+    {
+      "hour_start": 17,
+      "records": 25,
+      "mean_operating_ratio": 0.6140411177,
+      "median_operating_ratio": 0.6000316667,
+      "mean_downtime_h": 0.2967675667,
+      "total_downtime_h": 7.4191891667
+    },
+    {
+      "hour_start": 18,
+      "records": 8,
+      "mean_operating_ratio": 0.6160671582,
+      "median_operating_ratio": 0.6832418548,
+      "mean_downtime_h": 0.3236316667,
+      "total_downtime_h": 2.5890533333
+    },
+    {
+      "hour_start": 20,
+      "records": 1,
+      "mean_operating_ratio": 0.7333263889,
+      "median_operating_ratio": 0.7333263889,
+      "mean_downtime_h": 0.2666736111,
+      "total_downtime_h": 0.2666736111
+    }
+  ],
+  "downtime_event_start_hour_pattern": [
+    {
+      "event_start_hour": 7,
+      "event_count": 4,
+      "median_event_minutes": 27.5926166667,
+      "total_event_minutes": 406.2669833333
+    },
+    {
+      "event_start_hour": 8,
+      "event_count": 2,
+      "median_event_minutes": 56.7528333333,
+      "total_event_minutes": 113.5056666667
+    },
+    {
+      "event_start_hour": 9,
+      "event_count": 4,
+      "median_event_minutes": 17.0008,
+      "total_event_minutes": 85.5037166667
+    },
+    {
+      "event_start_hour": 10,
+      "event_count": 51,
+      "median_event_minutes": 2.00005,
+      "total_event_minutes": 301.5197833333
+    },
+    {
+      "event_start_hour": 11,
+      "event_count": 176,
+      "median_event_minutes": 1.750225,
+      "total_event_minutes": 916.562
+    },
+    {
+      "event_start_hour": 12,
+      "event_count": 77,
+      "median_event_minutes": 2.2502,
+      "total_event_minutes": 2154.6480166667
+    },
+    {
+      "event_start_hour": 13,
+      "event_count": 87,
+      "median_event_minutes": 1.5002166667,
+      "total_event_minutes": 513.9852333333
+    },
+    {
+      "event_start_hour": 14,
+      "event_count": 256,
+      "median_event_minutes": 1.4997083333,
+      "total_event_minutes": 840.4747
+    },
+    {
+      "event_start_hour": 15,
+      "event_count": 288,
+      "median_event_minutes": 1.50005,
+      "total_event_minutes": 1128.27345
+    },
+    {
+      "event_start_hour": 16,
+      "event_count": 269,
+      "median_event_minutes": 1.5001666667,
+      "total_event_minutes": 895.7786166667
+    },
+    {
+      "event_start_hour": 17,
+      "event_count": 133,
+      "median_event_minutes": 1.5005,
+      "total_event_minutes": 404.0092833333
+    },
+    {
+      "event_start_hour": 18,
+      "event_count": 35,
+      "median_event_minutes": 2.0001166667,
+      "total_event_minutes": 103.2539
+    },
+    {
+      "event_start_hour": 19,
+      "event_count": 1,
+      "median_event_minutes": 1.9999833333,
+      "total_event_minutes": 1.9999833333
+    },
+    {
+      "event_start_hour": 20,
+      "event_count": 5,
+      "median_event_minutes": 3.5001166667,
+      "total_event_minutes": 48.2510166667
+    }
+  ],
+  "weekday_pattern": [
+    {
+      "weekday": "Friday",
+      "production_days": 12,
+      "median_operating_ratio": 0.4571244955,
+      "mean_downtime_h": 2.0313878704,
+      "mean_event_count": 27.1666666667
+    },
+    {
+      "weekday": "Monday",
+      "production_days": 13,
+      "median_operating_ratio": 0.4289471095,
+      "mean_downtime_h": 2.4139069444,
+      "mean_event_count": 23.6153846154
+    },
+    {
+      "weekday": "Thursday",
+      "production_days": 9,
+      "median_operating_ratio": 0.6377194152,
+      "mean_downtime_h": 1.8614712346,
+      "mean_event_count": 28.6666666667
+    },
+    {
+      "weekday": "Tuesday",
+      "production_days": 14,
+      "median_operating_ratio": 0.5235964964,
+      "mean_downtime_h": 2.9018688492,
+      "mean_event_count": 23.1428571429
+    },
+    {
+      "weekday": "Wednesday",
+      "production_days": 6,
+      "median_operating_ratio": 0.608005443,
+      "mean_downtime_h": 1.5954662037,
+      "mean_event_count": 22.3333333333
+    }
+  ]
+}
