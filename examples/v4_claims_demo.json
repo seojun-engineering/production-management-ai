@@ -1,0 +1,38 @@
+[
+  {
+    "evidence_id": "V2-DAILY-2022-11-03",
+    "date": "2022-11-03",
+    "product": "3",
+    "metric": "operating_ratio",
+    "value": 0.29073278372908185,
+    "unit": "ratio",
+    "aggregation": "daily",
+    "selection_rule": "screening_top_5",
+    "cause_status": "NOT_ESTABLISHED",
+    "effect_verified": false
+  },
+  {
+    "evidence_id": "V2-DAILY-2022-11-03",
+    "date": "2022-11-03",
+    "product": "3",
+    "metric": "operating_ratio",
+    "value": 0.29073278372908185,
+    "unit": "event_log_minutes",
+    "aggregation": "daily",
+    "selection_rule": "screening_top_5",
+    "cause_status": "NOT_ESTABLISHED",
+    "effect_verified": false
+  },
+  {
+    "evidence_id": "V2-DAILY-2099-01-01",
+    "date": "2022-11-03",
+    "product": "3",
+    "metric": "operating_ratio",
+    "value": 0.29073278372908185,
+    "unit": "ratio",
+    "aggregation": "daily",
+    "selection_rule": "screening_top_5",
+    "cause_status": "NOT_ESTABLISHED",
+    "effect_verified": false
+  }
+]

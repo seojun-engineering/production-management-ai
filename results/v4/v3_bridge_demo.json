@@ -1,0 +1,105 @@
+{
+  "review_id": "V4-REVIEW-2022-11-03",
+  "source": "V3 Manager target + V2 Python evidence",
+  "target_date": "2022-11-03",
+  "target_type": "production_date",
+  "manager_review_rank": 1,
+  "manager_rank_validated": false,
+  "supporting_agents": [
+    "production",
+    "efficiency"
+  ],
+  "evidence_id": "V2-DAILY-2022-11-03",
+  "root_cause_status": "NOT_ESTABLISHED",
+  "factual_claims": [
+    {
+      "evidence_id": "V2-DAILY-2022-11-03",
+      "metric": "screening_rank",
+      "value": 1.0,
+      "unit": "rank",
+      "aggregation": "daily",
+      "date": "2022-11-03",
+      "selection_rule": "screening_top_5"
+    },
+    {
+      "evidence_id": "V2-DAILY-2022-11-03",
+      "metric": "screening_score",
+      "value": 92.5925925925926,
+      "unit": "relative_score",
+      "aggregation": "daily",
+      "date": "2022-11-03"
+    },
+    {
+      "evidence_id": "V2-DAILY-2022-11-03",
+      "metric": "operating_ratio",
+      "value": 0.29073278372908185,
+      "unit": "ratio",
+      "aggregation": "daily",
+      "date": "2022-11-03"
+    },
+    {
+      "evidence_id": "V2-DAILY-2022-11-03",
+      "metric": "downtime_h",
+      "value": 3.9910072222222155,
+      "unit": "hourly_record_hours",
+      "aggregation": "daily",
+      "date": "2022-11-03"
+    },
+    {
+      "evidence_id": "V2-DAILY-2022-11-03",
+      "metric": "event_count",
+      "value": 67.0,
+      "unit": "events",
+      "aggregation": "daily",
+      "date": "2022-11-03"
+    }
+  ],
+  "validation_results": [
+    {
+      "passed": true,
+      "review_required": false,
+      "errors": [],
+      "evidence_id": "V2-DAILY-2022-11-03"
+    },
+    {
+      "passed": true,
+      "review_required": false,
+      "errors": [],
+      "evidence_id": "V2-DAILY-2022-11-03"
+    },
+    {
+      "passed": true,
+      "review_required": false,
+      "errors": [],
+      "evidence_id": "V2-DAILY-2022-11-03"
+    },
+    {
+      "passed": true,
+      "review_required": false,
+      "errors": [],
+      "evidence_id": "V2-DAILY-2022-11-03"
+    },
+    {
+      "passed": true,
+      "review_required": false,
+      "errors": [],
+      "evidence_id": "V2-DAILY-2022-11-03"
+    }
+  ],
+  "all_factual_claims_passed": true,
+  "legacy_manager_narrative": {
+    "evidence": [
+      "Python screening rank 1 with score 92.5925925926, operating ratio 0.2907327837, hourly-record downtime of 3.9910072222 hours, and 67 events.",
+      "The production specialist identifies this as the highest-ranked production review day; the efficiency specialist includes it among low-operating-ratio days and notes that its event count differs from other low-ratio days."
+    ],
+    "reason_for_review": "This is the highest Python-generated screening result and has a low operating ratio. The differing event-count and hourly-downtime profile indicates that the operating loss should not be attributed to event frequency alone.",
+    "recommended_next_check": "Validate the source production and hourly-operation records; obtain shift-level output, planned production, quality or scrap records, staffing, schedule, and a validated operating-loss breakdown. Reconcile any related event records without treating logged duration as canonical downtime.",
+    "validation_status": "HUMAN_REVIEW_REQUIRED"
+  },
+  "limitations": [
+    "Factual values were retrieved from V2 CSV.",
+    "Legacy V3 narrative claims were not automatically certified.",
+    "Manager review rank is distinct from Python screening rank.",
+    "Passing factual checks does not establish causation."
+  ]
+}

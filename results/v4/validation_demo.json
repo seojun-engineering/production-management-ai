@@ -1,0 +1,39 @@
+{
+  "total": 3,
+  "passed": 1,
+  "failed": 2,
+  "results": [
+    {
+      "passed": true,
+      "review_required": false,
+      "errors": [],
+      "evidence_id": "V2-DAILY-2022-11-03"
+    },
+    {
+      "passed": false,
+      "review_required": false,
+      "errors": [
+        {
+          "code": "UNIT_MISMATCH",
+          "field": "unit",
+          "evidence_id": "V2-DAILY-2022-11-03",
+          "detail": "required ratio"
+        }
+      ],
+      "evidence_id": "V2-DAILY-2022-11-03"
+    },
+    {
+      "passed": false,
+      "review_required": false,
+      "errors": [
+        {
+          "code": "UNKNOWN_EVIDENCE_ID",
+          "field": "evidence_id",
+          "evidence_id": "V2-DAILY-2099-01-01",
+          "detail": "No matching registry record"
+        }
+      ],
+      "evidence_id": "V2-DAILY-2099-01-01"
+    }
+  ]
+}
