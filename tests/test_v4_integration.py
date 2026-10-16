@@ -5,6 +5,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from contextlib import closing
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src" / "v4"))
@@ -96,7 +97,7 @@ class V4IntegrationTests(unittest.TestCase):
             )
 
             # 7. 저장 상태 및 원인/효과 플래그 확인
-            with sqlite3.connect(db_path) as conn:
+            with closing(sqlite3.connect(db_path)) as conn, conn:
                 result = conn.execute(
                     """
                     SELECT status, closure_type,

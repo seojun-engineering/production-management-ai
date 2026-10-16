@@ -4,6 +4,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from contextlib import closing
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src" / "v4"))
@@ -31,7 +32,7 @@ class ActionTrackingTests(unittest.TestCase):
         self.temp_dir.cleanup()
 
     def get_action(self):
-        with sqlite3.connect(self.db_path) as conn:
+        with closing(sqlite3.connect(self.db_path)) as conn, conn:
             return conn.execute(
                 """
                 SELECT status,
@@ -45,7 +46,7 @@ class ActionTrackingTests(unittest.TestCase):
             ).fetchone()
 
     def get_history_count(self):
-        with sqlite3.connect(self.db_path) as conn:
+        with closing(sqlite3.connect(self.db_path)) as conn, conn:
             return conn.execute(
                 """
                 SELECT COUNT(*)
@@ -89,7 +90,7 @@ class ActionTrackingTests(unittest.TestCase):
         self.assertEqual(status, "COMPLETED")
         self.assertEqual((check, cause, effect), (0, 0, 0))
 
-        with sqlite3.connect(self.db_path) as conn:
+        with closing(sqlite3.connect(self.db_path)) as conn, conn:
             closure_type = conn.execute(
                 """
                 SELECT closure_type
@@ -172,7 +173,7 @@ class ActionTrackingTests(unittest.TestCase):
 
         self.assertEqual(result["changes"], 4)
 
-        with sqlite3.connect(self.db_path) as conn:
+        with closing(sqlite3.connect(self.db_path)) as conn, conn:
             row = conn.execute(
                 """
                 SELECT finding, action_description,
@@ -205,7 +206,7 @@ class ActionTrackingTests(unittest.TestCase):
             )
 
         # 잘못된 입력은 DB와 이력을 변경하지 않아야 함
-        with sqlite3.connect(self.db_path) as conn:
+        with closing(sqlite3.connect(self.db_path)) as conn, conn:
             due_date = conn.execute(
                 """
                 SELECT due_date
@@ -337,7 +338,7 @@ class ActionTrackingTests(unittest.TestCase):
             db_path=self.db_path,
         )
 
-        with sqlite3.connect(self.db_path) as conn:
+        with closing(sqlite3.connect(self.db_path)) as conn, conn:
             row = conn.execute(
                 """
                 SELECT status, closure_type,
@@ -427,7 +428,7 @@ class ActionTrackingTests(unittest.TestCase):
                 db_path=self.db_path,
             )
 
-        with sqlite3.connect(self.db_path) as conn:
+        with closing(sqlite3.connect(self.db_path)) as conn, conn:
             row = conn.execute(
                 """
                 SELECT status, finding, closure_type
@@ -450,6 +451,46 @@ class ActionTrackingTests(unittest.TestCase):
             self.get_history_count(),
             before
         )
+
+
+    def test_transaction_rollback_on_history_failure(self):
+        before = self.get_history_count()
+
+        # 이력 저장을 의도적으로 실패시키는 트리거
+        with closing(sqlite3.connect(self.db_path)) as conn, conn:
+            conn.execute("""
+                CREATE TRIGGER reject_history_insert
+                BEFORE INSERT ON action_history
+                BEGIN
+                    SELECT RAISE(
+                        ABORT,
+                        'Simulated history failure'
+                    );
+                END;
+            """)
+
+        # 담당자 변경 중 이력 INSERT가 실패해야 함
+        with self.assertRaises(sqlite3.DatabaseError):
+            update_action(
+                action_id=self.action_id,
+                changed_by="TEST_USER",
+                assignee="TEST_MANAGER",
+                db_path=self.db_path,
+            )
+
+        # UPDATE까지 롤백되었는지 확인
+        with closing(sqlite3.connect(self.db_path)) as conn, conn:
+            assignee = conn.execute(
+                """
+                SELECT assignee
+                FROM actions
+                WHERE action_id = ?
+                """,
+                (self.action_id,),
+            ).fetchone()[0]
+
+        self.assertIsNone(assignee)
+        self.assertEqual(self.get_history_count(), before)
 
 if __name__ == "__main__":
     unittest.main()

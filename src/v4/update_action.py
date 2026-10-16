@@ -1,4 +1,4 @@
-
+from contextlib import closing
 from pathlib import Path
 from datetime import datetime, timezone, date
 import sqlite3
@@ -104,7 +104,7 @@ def update_action(
     if not changes:
         raise ValueError("No changes requested")
 
-    with sqlite3.connect(db_path) as conn:
+    with closing(sqlite3.connect(db_path)) as conn, conn:
         conn.execute("PRAGMA foreign_keys = ON")
 
         # 읽기와 변경을 하나의 트랜잭션으로 처리
@@ -286,7 +286,7 @@ def main():
     print("Action:", result["action_id"])
     print("Changes:", result["changes"])
 
-    with sqlite3.connect(DB_PATH) as conn:
+    with closing(sqlite3.connect(DB_PATH)) as conn:
         history = conn.execute(
             """
             SELECT field_name, old_value, new_value,

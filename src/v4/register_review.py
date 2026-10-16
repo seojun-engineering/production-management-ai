@@ -1,4 +1,4 @@
-
+from contextlib import closing
 from pathlib import Path
 from datetime import datetime, timezone
 import json
@@ -32,115 +32,116 @@ def register_review(input_path=INPUT_PATH, db_path=DB_PATH):
     now = utc_now()
     inserted_actions = 0
 
-    with sqlite3.connect(db_path) as conn:
-        conn.execute("PRAGMA foreign_keys = ON")
+    with closing(sqlite3.connect(db_path)) as conn:
+        with conn:
+            conn.execute("PRAGMA foreign_keys = ON")
 
-        # Review 생성: 중복 실행 시 기존 기록을 덮어쓰지 않음
-        conn.execute(
-            """
-            INSERT OR IGNORE INTO reviews (
-                review_id,
-                target_date,
-                target_type,
-                evidence_ids,
-                selection_reason,
-                root_cause_status,
-                created_at
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                data["review_id"],
-                data["target_date"],
-                data["target_type"],
-                json.dumps(data["evidence_ids"]),
-                data["selection_reason"],
-                data["root_cause_status"],
-                now,
-            ),
-        )
-
-        for check in data["checks"]:
-            action_id = (
-                f"{data['review_id']}-{check['check_id']}"
-            )
-
-            cursor = conn.execute(
+            # Review 생성: 중복 실행 시 기존 기록을 덮어쓰지 않음
+            conn.execute(
                 """
-                INSERT OR IGNORE INTO actions (
-                    action_id,
+                INSERT OR IGNORE INTO reviews (
                     review_id,
-                    check_id,
-                    assignee,
-                    check_question,
-                    status,
-                    check_completed,
-                    cause_confirmed,
-                    effect_verified,
-                    created_at,
-                    updated_at
+                    target_date,
+                    target_type,
+                    evidence_ids,
+                    selection_reason,
+                    root_cause_status,
+                    created_at
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
-                    action_id,
                     data["review_id"],
-                    check["check_id"],
-                    None,
-                    check["question"],
-                    "NOT_REVIEWED",
-                    0,
-                    0,
-                    0,
-                    now,
+                    data["target_date"],
+                    data["target_type"],
+                    json.dumps(data["evidence_ids"]),
+                    data["selection_reason"],
+                    data["root_cause_status"],
                     now,
                 ),
             )
 
-            if cursor.rowcount == 1:
-                inserted_actions += 1
+            for check in data["checks"]:
+                action_id = (
+                    f"{data['review_id']}-{check['check_id']}"
+                )
 
-                # 신규 생성 기록도 이력에 남김
-                conn.execute(
+                cursor = conn.execute(
                     """
-                    INSERT INTO action_history (
+                    INSERT OR IGNORE INTO actions (
                         action_id,
-                        field_name,
-                        old_value,
-                        new_value,
-                        changed_by,
-                        changed_at
+                        review_id,
+                        check_id,
+                        assignee,
+                        check_question,
+                        status,
+                        check_completed,
+                        cause_confirmed,
+                        effect_verified,
+                        created_at,
+                        updated_at
                     )
-                    VALUES (?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         action_id,
-                        "status",
+                        data["review_id"],
+                        check["check_id"],
                         None,
+                        check["question"],
                         "NOT_REVIEWED",
-                        "SYSTEM_DEMO",
+                        0,
+                        0,
+                        0,
+                        now,
                         now,
                     ),
                 )
 
-        conn.commit()
+                if cursor.rowcount == 1:
+                    inserted_actions += 1
 
-        saved = conn.execute(
-            """
-            SELECT
-                action_id,
-                check_id,
-                check_question,
-                status,
-                check_completed,
-                cause_confirmed,
-                effect_verified
-            FROM actions
-            WHERE review_id = ?
-            ORDER BY check_id
-            """,
-            (data["review_id"],),
-        ).fetchall()
+                    # 신규 생성 기록도 이력에 남김
+                    conn.execute(
+                        """
+                        INSERT INTO action_history (
+                            action_id,
+                            field_name,
+                            old_value,
+                            new_value,
+                            changed_by,
+                            changed_at
+                        )
+                        VALUES (?, ?, ?, ?, ?, ?)
+                        """,
+                        (
+                            action_id,
+                            "status",
+                            None,
+                            "NOT_REVIEWED",
+                            "SYSTEM_DEMO",
+                            now,
+                        ),
+                    )
+
+            conn.commit()
+
+            saved = conn.execute(
+                """
+                SELECT
+                    action_id,
+                    check_id,
+                    check_question,
+                    status,
+                    check_completed,
+                    cause_confirmed,
+                    effect_verified
+                FROM actions
+                WHERE review_id = ?
+                ORDER BY check_id
+                """,
+                (data["review_id"],),
+            ).fetchall()
 
     return {
         "review_id": data["review_id"],
