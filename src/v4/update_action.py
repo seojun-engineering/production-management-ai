@@ -18,11 +18,24 @@ ALLOWED_STATUSES = {
 # 허용되는 상태 전환 경로
 ALLOWED_TRANSITIONS = {
     "NOT_REVIEWED": {"UNDER_REVIEW"},
-    "UNDER_REVIEW": {"ACTION_PLANNED", "ON_HOLD"},
+    "UNDER_REVIEW": {
+        "ACTION_PLANNED",
+        "ON_HOLD",
+        "COMPLETED",
+    },
     "ACTION_PLANNED": {"IN_PROGRESS", "ON_HOLD"},
     "IN_PROGRESS": {"COMPLETED", "ON_HOLD"},
-    "ON_HOLD": {"UNDER_REVIEW", "ACTION_PLANNED", "IN_PROGRESS"},
+    "ON_HOLD": {
+        "UNDER_REVIEW",
+        "ACTION_PLANNED",
+        "IN_PROGRESS",
+    },
     "COMPLETED": set(),
+}
+
+ALLOWED_CLOSURE_TYPES = {
+    "ACTION_COMPLETED",
+    "REVIEW_CLOSED_NO_ACTION",
 }
 
 def utc_now():
@@ -38,6 +51,7 @@ def update_action(
     action_description=None,
     due_date=None,
     follow_up_metric=None,
+    closure_type=None,
     db_path=DB_PATH,
 ):
     if not changed_by or not changed_by.strip():
@@ -59,7 +73,19 @@ def update_action(
                 "due_date must be a valid YYYY-MM-DD date"
             )
 
+    if closure_type is not None:
+        if closure_type not in ALLOWED_CLOSURE_TYPES:
+            raise ValueError(
+                f"Invalid closure_type: {closure_type}"
+            )
+
+        if status != "COMPLETED":
+            raise ValueError(
+                "closure_type requires status=COMPLETED"
+            )
+
     changes = {
+        "closure_type": closure_type,
         "assignee": assignee,
         "status": status,
         "finding": finding,
@@ -97,6 +123,12 @@ def update_action(
 
         if existing is None:
             raise ValueError(f"Action not found: {action_id}")
+        # 종료된 Action은 일반 수정 기능으로 변경할 수 없음
+        if existing["status"] == "COMPLETED":
+            raise ValueError(
+                "Completed action is locked"
+            )
+
 
         # 현재 상태에서 다음 상태로 이동할 수 있는지 확인
         if status is not None:
@@ -115,19 +147,52 @@ def update_action(
 
         # 조치 완료에는 수행한 조치의 기록이 필요함
         if status == "COMPLETED":
-            current_description = existing["action_description"]
+            if closure_type not in ALLOWED_CLOSURE_TYPES:
+                raise ValueError(
+                    "COMPLETED requires a valid closure_type"
+                )
 
+            current_finding = existing["finding"]
+            final_finding = (
+                finding
+                if finding is not None
+                else current_finding
+            )
+
+            current_description = existing["action_description"]
             final_description = (
                 action_description
                 if action_description is not None
                 else current_description
             )
 
-            if not final_description or not final_description.strip():
-                raise ValueError(
-                    "COMPLETED requires action_description"
-                )
+            if closure_type == "REVIEW_CLOSED_NO_ACTION":
+                if existing["status"] != "UNDER_REVIEW":
+                    raise ValueError(
+                        "No-action closure requires UNDER_REVIEW"
+                    )
 
+                if not final_finding or not final_finding.strip():
+                    raise ValueError(
+                        "No-action closure requires finding"
+                    )
+
+                if final_description and final_description.strip():
+                    raise ValueError(
+                        "No-action closure cannot include action_description"
+                    )
+
+            elif closure_type == "ACTION_COMPLETED":
+                if existing["status"] != "IN_PROGRESS":
+                    raise ValueError(
+                        "Action closure requires IN_PROGRESS"
+                    )
+
+                if not final_description or not final_description.strip():
+                    raise ValueError(
+                        "Action closure requires action_description"
+                    )
+                
         # 보류 상태로 변경하려면 사유를 기록해야 함
         if status == "ON_HOLD":
             current_finding = existing["finding"]

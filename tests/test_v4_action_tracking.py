@@ -57,8 +57,8 @@ class ActionTrackingTests(unittest.TestCase):
 
     
     
+    
     def test_status_does_not_confirm_cause(self):
-        # 정상적인 업무 진행 순서
         statuses = [
             "UNDER_REVIEW",
             "ACTION_PLANNED",
@@ -76,16 +76,30 @@ class ActionTrackingTests(unittest.TestCase):
                     if status == "COMPLETED"
                     else None
                 ),
+                closure_type=(
+                    "ACTION_COMPLETED"
+                    if status == "COMPLETED"
+                    else None
+                ),
                 db_path=self.db_path,
             )
 
         status, check, cause, effect = self.get_action()
 
         self.assertEqual(status, "COMPLETED")
-        self.assertEqual(check, 0)
-        self.assertEqual(cause, 0)
-        self.assertEqual(effect, 0)
+        self.assertEqual((check, cause, effect), (0, 0, 0))
 
+        with sqlite3.connect(self.db_path) as conn:
+            closure_type = conn.execute(
+                """
+                SELECT closure_type
+                FROM actions
+                WHERE action_id = ?
+                """,
+                (self.action_id,),
+            ).fetchone()[0]
+
+        self.assertEqual(closure_type, "ACTION_COMPLETED")
 
     def test_assignee_change_preserves_independent_flags(self):
         update_action(
@@ -242,6 +256,7 @@ class ActionTrackingTests(unittest.TestCase):
                 action_id=self.action_id,
                 changed_by="TEST_USER",
                 status="COMPLETED",
+                closure_type="ACTION_COMPLETED",
                 db_path=self.db_path,
             )
 
@@ -250,6 +265,7 @@ class ActionTrackingTests(unittest.TestCase):
         self.assertEqual(current_status, "IN_PROGRESS")
         self.assertEqual((check, cause, effect), (0, 0, 0))
         self.assertEqual(self.get_history_count(), before)
+
 
     def test_on_hold_requires_finding(self):
         update_action(
@@ -291,7 +307,6 @@ class ActionTrackingTests(unittest.TestCase):
             "ON_HOLD"
         )
 
-        # 복귀 시에도 원인과 효과는 확인되지 않은 상태
         update_action(
             action_id=self.action_id,
             changed_by="TEST_USER",
@@ -302,6 +317,138 @@ class ActionTrackingTests(unittest.TestCase):
         self.assertEqual(
             self.get_action(),
             ("UNDER_REVIEW", 0, 0, 0)
+        )
+
+
+    def test_no_action_closure_success(self):
+        update_action(
+            action_id=self.action_id,
+            changed_by="TEST_USER",
+            status="UNDER_REVIEW",
+            db_path=self.db_path,
+        )
+
+        update_action(
+            action_id=self.action_id,
+            changed_by="TEST_USER",
+            status="COMPLETED",
+            closure_type="REVIEW_CLOSED_NO_ACTION",
+            finding="DEMO: Records reviewed; no action required",
+            db_path=self.db_path,
+        )
+
+        with sqlite3.connect(self.db_path) as conn:
+            row = conn.execute(
+                """
+                SELECT status, closure_type,
+                       action_description,
+                       cause_confirmed, effect_verified
+                FROM actions
+                WHERE action_id = ?
+                """,
+                (self.action_id,),
+            ).fetchone()
+
+        self.assertEqual(row[0], "COMPLETED")
+        self.assertEqual(row[1], "REVIEW_CLOSED_NO_ACTION")
+        self.assertIsNone(row[2])
+        self.assertEqual(row[3:], (0, 0))
+
+    def test_no_action_closure_requires_finding(self):
+        update_action(
+            action_id=self.action_id,
+            changed_by="TEST_USER",
+            status="UNDER_REVIEW",
+            db_path=self.db_path,
+        )
+
+        before = self.get_history_count()
+
+        with self.assertRaises(ValueError):
+            update_action(
+                action_id=self.action_id,
+                changed_by="TEST_USER",
+                status="COMPLETED",
+                closure_type="REVIEW_CLOSED_NO_ACTION",
+                db_path=self.db_path,
+            )
+
+        self.assertEqual(self.get_action()[0], "UNDER_REVIEW")
+        self.assertEqual(self.get_history_count(), before)
+
+    def test_no_action_closure_rejects_action_description(self):
+        update_action(
+            action_id=self.action_id,
+            changed_by="TEST_USER",
+            status="UNDER_REVIEW",
+            db_path=self.db_path,
+        )
+
+        before = self.get_history_count()
+
+        with self.assertRaises(ValueError):
+            update_action(
+                action_id=self.action_id,
+                changed_by="TEST_USER",
+                status="COMPLETED",
+                closure_type="REVIEW_CLOSED_NO_ACTION",
+                finding="DEMO: No further action required",
+                action_description="DEMO: Replaced equipment",
+                db_path=self.db_path,
+            )
+
+        self.assertEqual(self.get_action()[0], "UNDER_REVIEW")
+        self.assertEqual(self.get_history_count(), before)
+
+    def test_completed_action_cannot_be_modified(self):
+        update_action(
+            action_id=self.action_id,
+            changed_by="TEST_USER",
+            status="UNDER_REVIEW",
+            db_path=self.db_path,
+        )
+
+        update_action(
+            action_id=self.action_id,
+            changed_by="TEST_USER",
+            status="COMPLETED",
+            closure_type="REVIEW_CLOSED_NO_ACTION",
+            finding="DEMO: Review completed without action",
+            db_path=self.db_path,
+        )
+
+        before = self.get_history_count()
+
+        with self.assertRaises(ValueError):
+            update_action(
+                action_id=self.action_id,
+                changed_by="TEST_USER",
+                finding="DEMO: Modified after closure",
+                db_path=self.db_path,
+            )
+
+        with sqlite3.connect(self.db_path) as conn:
+            row = conn.execute(
+                """
+                SELECT status, finding, closure_type
+                FROM actions
+                WHERE action_id = ?
+                """,
+                (self.action_id,),
+            ).fetchone()
+
+        self.assertEqual(row[0], "COMPLETED")
+        self.assertEqual(
+            row[1],
+            "DEMO: Review completed without action"
+        )
+        self.assertEqual(
+            row[2],
+            "REVIEW_CLOSED_NO_ACTION"
+        )
+        self.assertEqual(
+            self.get_history_count(),
+            before
         )
 
 if __name__ == "__main__":

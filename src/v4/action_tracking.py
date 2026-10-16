@@ -70,6 +70,19 @@ def initialize_database(db_path=DB_PATH):
         );
         """)
 
+        # 기존 DB를 유지하면서 closure_type 필드 추가
+        columns = {
+            row[1]
+            for row in conn.execute(
+                "PRAGMA table_info(actions)"
+            ).fetchall()
+        }
+
+        if "closure_type" not in columns:
+            conn.execute(
+                "ALTER TABLE actions ADD COLUMN closure_type TEXT"
+            )
+
         conn.commit()
 
     print("=== V4-C DATABASE INITIALIZATION ===")
