@@ -219,3 +219,8 @@ __marimo__/
 
 # Raw external manufacturing data
 data/real/
+# V4 local SQLite databases
+data/v4/*.db
+data/v4/*.db-journal
+data/v4/*.db-wal
+data/v4/*.db-shm
