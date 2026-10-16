@@ -1,0 +1,80 @@
+{
+  "review_id": "V4-REVIEW-2022-11-03",
+  "target_date": "2022-11-03",
+  "target_type": "production_date",
+  "evidence_ids": [
+    "V2-DAILY-2022-11-03"
+  ],
+  "observations": [
+    {
+      "metric": "downtime_h",
+      "value": 3.9910072222222155,
+      "unit": "hourly_record_hours"
+    },
+    {
+      "metric": "event_count",
+      "value": 67.0,
+      "unit": "events"
+    },
+    {
+      "metric": "operating_ratio",
+      "value": 0.29073278372908185,
+      "unit": "ratio"
+    },
+    {
+      "metric": "screening_rank",
+      "value": 1.0,
+      "unit": "rank"
+    },
+    {
+      "metric": "screening_score",
+      "value": 92.5925925925926,
+      "unit": "relative_score"
+    }
+  ],
+  "selection_reason": "Python Screening Rank 1 (relative screening_top_5)",
+  "selection_rule": "screening_top_5",
+  "checks": [
+    {
+      "check_id": "CHECK-001",
+      "category": "production_record",
+      "question": "해당 날짜의 생산계획과 실제 생산량은 일치했는가?",
+      "required_data": [
+        "planned_production_qty",
+        "actual_production_qty",
+        "production_schedule"
+      ],
+      "if_confirmed": "생산계획 달성 여부와 부족 수량을 확인한다.",
+      "if_not_confirmed": "생산계획과 실적의 집계 기준을 재검증한다."
+    },
+    {
+      "check_id": "CHECK-002",
+      "category": "downtime_reconciliation",
+      "question": "시간별 비운영시간과 이벤트 로그의 기록 범위가 일치하는가?",
+      "required_data": [
+        "hourly_operation_record",
+        "downtime_event_log",
+        "event_timestamp"
+      ],
+      "if_confirmed": "시간별 비운영시간 분포와 이벤트 발생 패턴을 검토한다.",
+      "if_not_confirmed": "기록 누락과 시간 정의 차이를 점검한다."
+    },
+    {
+      "check_id": "CHECK-003",
+      "category": "downtime_reason",
+      "question": "비운영시간이 계획정지, 세척, 품목교체, 고장 등 어떤 사유와 관련되는가?",
+      "required_data": [
+        "downtime_reason_code",
+        "equipment_id",
+        "maintenance_record",
+        "operator_comment"
+      ],
+      "if_confirmed": "확인된 사유를 관련 원천 기록과 대조한다.",
+      "if_not_confirmed": "원인을 미확정 상태로 유지하고 추가 기록을 요청한다."
+    }
+  ],
+  "root_cause_status": "NOT_ESTABLISHED",
+  "action_status": "NOT_REVIEWED",
+  "data_type": "REAL_OBSERVATION",
+  "interpretation_status": "HUMAN_REVIEW_REQUIRED"
+}
