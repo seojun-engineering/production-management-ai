@@ -2,6 +2,10 @@
 
 ### Evidence-Based Manufacturing Decision Support System
 
+![Production Management AI V4 Dashboard](results/figures/v4_dashboard.png)
+
+*V4 Streamlit Dashboard — Production KPI, Evidence Validation & Action Tracking*
+
 **Python · Pandas · Rule-Based Validation · OpenAI API · SQLite · Streamlit**
 
 생산 데이터를 분석해 운영상 이상 징후를 탐지하고, 근거를 검증한 뒤 생산관리자가 우선 확인해야 할 사항과 후속 조치 현황을 관리하는 의사결정 지원 프로젝트입니다.
